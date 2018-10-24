@@ -10,20 +10,13 @@ class App extends React.Component {
     friends: friends
   };
 
-  delete = () => {
-   let filteredFriends = this.state.friends.filter((item) => {
-     return (item.id !== id)
-   })
-   this.setState({friends: filteredFriends})
-  }
-
   
 
   render(){  
     return <Wrapper>
       <h1 className="title">Friends List</h1>
       {this.state.friends.map(item => (
-        <FriendCard delete={this.delete} id={item.id} name={item.name} image={item.image} occupation={item.occupation} location={item.location} key={item.id}/>
+        <FriendCard shuffle={this.shuffle} id={item.id} name={item.name} image={item.image} occupation={item.occupation} location={item.location} key={item.id}/>
       ))}
     </Wrapper>
   }
