@@ -4,12 +4,14 @@ import Wrapper from "./components/Wrapper";
 import friends from "./friends.json";
 import "./App.css";
 
+
 class App extends React.Component {
 
   state = {
     friends: friends,
     score: 0,
-    message: ""
+    message: "",
+    notClicked: friends
   };
 
   imageShuffle = item => {
@@ -20,35 +22,26 @@ class App extends React.Component {
   };
 
   click = (id) => {
-    console.log(id);
-    console.log(this.state.friends[id-1].id);
-    console.log(this.state.friends);
-
-
-    if(this.state.friends[id-1].clicked){
-      this.lose();
+    const check = this.state.notClicked.find(data => data.id === id);
+    if(check === undefined){
+      this.setState({
+      message: "Sorry, you lost! You scored " + this.state.score + " points! Try again!",
+      score: 0,
+      notClicked: friends
+      })
     }else{
-      var newState = {...this.state};
+      const newNotClicked = this.state.notClicked.filter(data => data.id !== id);
+      
+      this.setState({
+        score: this.state.score + 1,
+        message: "Good Job! Keep it up!",
+        friends:friends,
+        notClicked: newNotClicked
+      });
 
-      newState.friends[id-1].clicked = true;
-
-      newState.score = this.state.score + 1;
-      newState.message = "Good Job! Keep it up!";
-      this.setState(newState);     
-      this.imageShuffle(newState.friends);
+      this.imageShuffle(friends);
     };
-
-
   }
-
-  lose = () => {
-    var newState = {...this.state};
-    newState.message = "Sorry, you lost! You scored " + this.state.score + " points! Try again!";
-    newState.score = 0;
-    newState.friends = friends;
-    this.setState(newState); 
-  }
-
 
   render(){  
     return <div>
@@ -56,7 +49,7 @@ class App extends React.Component {
         <h2>Current Score: {this.state.score} {this.state.message}</h2>      
         <Wrapper>
             {this.state.friends.map(item => (
-              <FriendCard click={this.click} id={item.id} name={item.name} image={item.image} clicked={item.clicked} key={item.id}/>
+              <FriendCard click={this.click} id={item.id} name={item.name} image={item.image} key={item.id}/>
             ))}
         </Wrapper>
       </div>
