@@ -2,9 +2,9 @@ import React from "react";
 import "./FriendCard.css";
 
 const FriendCard = props => (
-  <div className="card" onClick={() => props.shuffle(props.id)}>
+  <div className="card">
     <div className="img-container">
-      <img alt={props.name} src={props.image} />
+      <img alt={props.name} src={props.image} onClick={() => props.click(props.id)}/>
     </div>
   </div>
 );
